@@ -1,0 +1,17 @@
+$Id$
+-------------------------------------------------------------------
+
+     =========================================================
+     Geant4 - an Object-Oriented Toolkit for Simulation in HEP
+     =========================================================
+
+                    Sphere1 Application History file
+                    -----------------------
+This file should be used to briefly
+summarize all major modifications introduced in the code. 
+
+     ----------------------------------------------------------
+     * Reverse chronological order (last date on top), please *
+     ----------------------------------------------------------
+
+17Dec2012: copied the most basic example B1 from Geant4 and went through the code replacing B1 and exampleB1 with Sphere1. The goal is to review what is inside a most basic Geant4 application and to replace the geometry by a simple sphere which is sensitive to optical photons. Later this simple sphere application will be refined and parts of the code from other examples and/or the application developer manual and/or DCGLG4sim will be included to arrive at a simulation of a KamLAND-like detector and a 1L spherical detector with 6 PMTs. -- Christoph Aberle

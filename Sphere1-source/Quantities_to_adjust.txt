@@ -1,0 +1,21 @@
+to be replaced: 
+
+DetectorConstruction.cc
+- atomic composition
+- refractive indices
+- absorption spectrum (check if 1/e is correct)
+- scintillation spectrum
+- LY
+- fast time constant
+- slow time constant
+- fast fraction
+- birks
+- QE (leave it the same)
+- reflectivity
+- pair production for gammas? is it in gamma conversion?
+
+- time cut for analysis of phi and foward/backward (ugly hard-coding)
+
+-time spread due to vertex reco
+-TTS of PMTs
+- coverage
