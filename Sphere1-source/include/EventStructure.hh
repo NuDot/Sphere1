@@ -32,13 +32,15 @@ struct event
   float epg_pyi[MAX_epg];
   float epg_pzi[MAX_epg];
   float epg_ei[MAX_epg];
-  int epg_isOP[MAX_epg];
+  int epg_isOPi[MAX_epg];
+  int epg_isChei[MAX_epg];
 
   int N_epg_f;
   int epg_pIDf[MAX_epg];
   int epg_tIDf[MAX_epg];
   float epg_qf[MAX_epg];
-  double epg_tf[MAX_epg];
+  double epg_tf[MAX_epg]; //keep time as double for better precision
+  double epg_ltf[MAX_epg];
   float epg_xf[MAX_epg];
   float epg_yf[MAX_epg];
   float epg_zf[MAX_epg];
@@ -46,6 +48,9 @@ struct event
   float epg_pyf[MAX_epg];
   float epg_pzf[MAX_epg];
   float epg_ef[MAX_epg];
+  float epg_lf[MAX_epg];
+  int epg_isOPf[MAX_epg];
+  int epg_isChef[MAX_epg];
 
   float edep;
   float edep_cor;
@@ -69,7 +74,10 @@ struct event
   float theta_reco[MAX_phot];
   float phi_reco[MAX_phot];
   int process[MAX_phot];  
-  
+ 
+  double trueVtxX;
+  double trueVtxY;
+  double trueVtxZ; 
 
 };
 

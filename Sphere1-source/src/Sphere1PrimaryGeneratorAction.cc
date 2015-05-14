@@ -57,10 +57,11 @@ const Sphere1PrimaryGeneratorAction* Sphere1PrimaryGeneratorAction::Instance()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-Sphere1PrimaryGeneratorAction::Sphere1PrimaryGeneratorAction()
+Sphere1PrimaryGeneratorAction::Sphere1PrimaryGeneratorAction(event* fEv)
 : G4VUserPrimaryGeneratorAction()//,
 //  fParticleGun(0)
 {
+  pEv = fEv;
 /*
   //use particle gun
   G4int n_particle = 1;
@@ -76,7 +77,7 @@ Sphere1PrimaryGeneratorAction::Sphere1PrimaryGeneratorAction()
   //?
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
   //?
-  fParticleGun->SetParticleEnergy(1.4*MeV);
+  fParticleGun->SetParticleEnergy(2.995*MeV);
   //fParticleGun->SetParticleEnergy(3.03798*1e-06*MeV); //optical photon energy @ 392.6nm: 3.1579*1e-06*MeV
 */  
 
@@ -86,7 +87,7 @@ Sphere1PrimaryGeneratorAction::Sphere1PrimaryGeneratorAction()
   //G4String hep_input_file = "/home/christoph/geant4/MyG4_applications/Sphere1-build/Generator/original/DBeta/output/hepevt.EVT"; //2nuBB or 0nuBB
 //  G4String hep_input_file = "/u/nobackup/lwinslow/apps/Event_Generators/DBeta/output/hepevt_1_back_to_back/hepevt_1_back_to_back.EVT"; //one back to back Cd116 0nuBB event
 //  HEPEvt = new G4HEPEvtInterface(hep_input_file.data());
-  const char* filename = "/u/nobackup/lwinslow/elagin/DBeta/output/Se_0vbb_1e6.EVT";//"data/hepevt.EVT";
+  const char* filename = "/u/nobackup/lwinslow/elagin/data/db_out/Se_0vbb_1e6.EVT";//"data/hepevt.EVT";
   G4cout<<"INPUT_FILE = "<<filename<<G4endl;
   HEPEvt = new G4HEPEvtInterface(filename);
 
@@ -143,9 +144,12 @@ void Sphere1PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
    
   // Particle Gun
   //?
-  G4double x0 = -4500.00;//-6500.000;
-  G4double y0 = 0.;
-  G4double z0 = 0.;
+  G4double x0 = G4UniformRand()*2*2600-2600;// 4500.;//-6500.000;
+  G4double y0 = G4UniformRand()*2*2600-2600;// 0.;
+  G4double z0 = G4UniformRand()*2*2600-2600;// 0.;
+  pEv->trueVtxX = x0/10;
+  pEv->trueVtxY = y0/10;
+  pEv->trueVtxZ = z0/10;
   //?
   /*
   G4double x0 = 2500.;
@@ -172,10 +176,10 @@ void Sphere1PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   //?
 /*
   G4ParticleDefinition* ion
-	= G4ParticleTable::GetParticleTable()->GetIon(81,208,0); //Tl 
+	//= G4ParticleTable::GetParticleTable()->GetIon(81,208,0); //Tl 
 	//= G4ParticleTable::GetParticleTable()->GetIon(90,232,0); //Th series
 	//= G4ParticleTable::GetParticleTable()->GetIon(92,238,0); //U series
-       //= G4ParticleTable::GetParticleTable()->GetIon(6,10,0);
+       = G4ParticleTable::GetParticleTable()->GetIon(6,10,0);
   fParticleGun->SetParticleDefinition(ion);
   fParticleGun->SetParticleCharge(0.);
 */
@@ -184,15 +188,15 @@ void Sphere1PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
 //  SetOptPhotonPolar(); //random polarization, here one can also enter a fixed angle or a special polarization angle distribution
   fParticleGun->GeneratePrimaryVertex(anEvent);
-*/  
+*/
 
   
   //HEPEvt generator
   //?
   //HEPEvt->SetParticlePosition(G4ThreeVector(2500.*mm,2500.*mm,2500.*mm));
-  HEPEvt->SetParticlePosition(G4ThreeVector(-1500.*mm,0.*mm,0.*mm));
+  HEPEvt->SetParticlePosition(G4ThreeVector(x0,y0,z0));
   HEPEvt->GeneratePrimaryVertex(anEvent);
-  
+
 
 }
 

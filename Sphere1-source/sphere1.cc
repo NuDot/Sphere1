@@ -71,7 +71,7 @@ int main(int argc,char** argv)
 
   TROOT root("", "");
   TFile* f;
-  f = TFile::Open("sph_out.root", "recreate");
+  f = TFile::Open("sph_out_Se82_rndVtxBox.root", "recreate");
 
   TTree* epgTree = new TTree("epgTree", "epgTree");
   epgTree->Branch("evt_num",&Ev.evt_num,"evt_num/I");
@@ -100,13 +100,15 @@ int main(int argc,char** argv)
   epgTree->Branch("epg_pzi",&Ev.epg_pzi,"epg_pzi[N_epg_i]/F");
   epgTree->Branch("epg_ei",&Ev.epg_ei,"epg_ei[N_epg_i]/F");
   epgTree->Branch("epg_ti",&Ev.epg_ti,"epg_ti[N_epg_i]/D");
-  epgTree->Branch("epg_isOP",&Ev.epg_isOP,"epg_isOP[N_epg_i]/I");
+  epgTree->Branch("epg_isOPi",&Ev.epg_isOPi,"epg_isOPi[N_epg_i]/I");
+  epgTree->Branch("epg_isChei",&Ev.epg_isChei,"epg_isChei[N_epg_i]/I");
 
   epgTree->Branch("N_epg_f",&Ev.N_epg_f,"N_epg_f/I");
   epgTree->Branch("epg_pIDf",&Ev.epg_pIDf,"epg_pIDf[N_epg_f]/I");
   epgTree->Branch("epg_tIDf",&Ev.epg_tIDf,"epg_tIDf[N_epg_f]/I");
   epgTree->Branch("epg_qf",&Ev.epg_qf,"epg_qf[N_epg_f]/F");
   epgTree->Branch("epg_tf",&Ev.epg_tf,"epg_tf[N_epg_f]/D");
+  epgTree->Branch("epg_ltf",&Ev.epg_ltf,"epg_ltf[N_epg_f]/D");
   epgTree->Branch("epg_xf",&Ev.epg_xf,"epg_xf[N_epg_f]/F");
   epgTree->Branch("epg_yf",&Ev.epg_yf,"epg_yf[N_epg_f]/F");
   epgTree->Branch("epg_zf",&Ev.epg_zf,"epg_zf[N_epg_f]/F");
@@ -114,7 +116,9 @@ int main(int argc,char** argv)
   epgTree->Branch("epg_pyf",&Ev.epg_pyf,"epg_pyf[N_epg_f]/F");
   epgTree->Branch("epg_pzf",&Ev.epg_pzf,"epg_pzf[N_epg_f]/F");
   epgTree->Branch("epg_ef",&Ev.epg_ef,"epg_ef[N_epg_f]/F");
-  epgTree->Branch("epg_tf",&Ev.epg_tf,"epg_tf[N_epg_i]/D");
+  epgTree->Branch("epg_lf",&Ev.epg_lf,"epg_lf[N_epg_f]/F");
+  epgTree->Branch("epg_isOPf",&Ev.epg_isOPf,"epg_isOPf[N_epg_f]/I");
+  epgTree->Branch("epg_isChef",&Ev.epg_isChef,"epg_isChef[N_epg_f]/I");
 
   epgTree->Branch("edep",&Ev.edep,"edep/F");
   epgTree->Branch("edep_cor",&Ev.edep_cor,"edep_cor/F");
@@ -139,8 +143,10 @@ int main(int argc,char** argv)
 //  epgTree->Branch("",&Ev.,"[N_phot]/F");
 //  epgTree->Branch("",&Ev.,"[N_phot]/F");
   epgTree->Branch("process",&Ev.process,"process[N_phot]/I");
-
   
+  epgTree->Branch("trueVtxX",&Ev.trueVtxX,"trueVtxX/D");
+  epgTree->Branch("trueVtxY",&Ev.trueVtxY,"trueVtxY/D");
+  epgTree->Branch("trueVtxZ",&Ev.trueVtxZ,"trueVtxZ/D");
 
 
   // Choose the Random engine
@@ -178,7 +184,7 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(physicsList);
     
   // Primary generator action
-  runManager->SetUserAction(new Sphere1PrimaryGeneratorAction());
+  runManager->SetUserAction(new Sphere1PrimaryGeneratorAction(&Ev));
 
   // Set user action classes
   //

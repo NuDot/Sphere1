@@ -36,6 +36,8 @@
 #include "G4HEPEvtInterface.hh"
 #include "globals.hh"
 
+#include "EventStructure.hh"
+
 class G4ParticleGun;
 class G4VPrimaryGenerator;
 
@@ -51,7 +53,7 @@ class Sphere1DetectorConstruction;
 class Sphere1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
-    Sphere1PrimaryGeneratorAction();    
+    Sphere1PrimaryGeneratorAction(event*);    
     virtual ~Sphere1PrimaryGeneratorAction();
 
     // static access method
@@ -72,6 +74,7 @@ class Sphere1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4ParticleGun*  fParticleGun; // pointer a to G4 gun class
     G4VPrimaryGenerator* HEPEvt;
 
+    event* pEv;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -123,7 +123,7 @@ void Sphere1TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 	}
 */
   G4String pName = aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName();
-  if(pName=="e+"||pName=="e-"||pName=="gamma")//||pName=="opticalphoton")
+  if(pName=="e+"||pName=="e-"||pName=="gamma"||pName=="opticalphoton")
   {
     int id=aTrack->GetTrackID();
     bool new_track=true;
@@ -144,22 +144,33 @@ void Sphere1TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
       tEv->epg_pyi[tEv->N_epg_i]=aTrack->GetMomentumDirection().y();
       tEv->epg_pzi[tEv->N_epg_i]=aTrack->GetMomentumDirection().z();
       tEv->epg_ei[tEv->N_epg_i]=aTrack->GetDynamicParticle()->GetKineticEnergy();
-      tEv->epg_isOP[tEv->N_epg_i]=0;
-/*      if(pName=="opticalphoton") 
+      tEv->epg_isOPi[tEv->N_epg_i]=0;
+      tEv->epg_isChei[tEv->N_epg_i]=0;
+
+      if(pName=="opticalphoton") 
       {
-        tEv->epg_isOP[tEv->N_epg_i]=741;
-	G4Track* bTrack;
-	bTrack = (G4Track*)aTrack;
-	bTrack->SetTrackStatus(fStopAndKill);
+        tEv->epg_isOPi[tEv->N_epg_i]=1;
+        if(aTrack->GetCreatorProcess()->GetProcessName()=="Cerenkov")
+  	  tEv->epg_isChei[tEv->N_epg_i]=1;
+
+//	G4Track* bTrack;
+//	bTrack = (G4Track*)aTrack;
+//	bTrack->SetTrackStatus(fStopAndKill);
       }
-*/
+
       tEv->N_epg_i++;    
     }
   }
-
+/* AE (09/10/2014) I don't remember why I had to separate photons this way...
   if(pName=="opticalphoton")
   {
-    tEv->epg_isOP[tEv->N_epg_i]=1;
+      tEv->epg_isOP[tEv->N_epg_i]=1;
+      if(aTrack->GetCreatorProcess()->GetProcessName()=="Cerenkov")
+      {
+	tEv->epg_isChe[tEv->N_epg_i]=1;
+      } else {
+	tEv->epg_isChe[tEv->N_epg_i]=0;
+      }
 
       tEv->epg_tIDi[tEv->N_epg_i]=aTrack->GetTrackID();
       tEv->epg_pIDi[tEv->N_epg_i]=aTrack->GetParentID();
@@ -178,7 +189,7 @@ void Sphere1TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 //    bTrack = (G4Track*)aTrack;
 //    bTrack->SetTrackStatus(fStopAndKill);
   }
-
+*/
 
   return;
 }  
@@ -186,7 +197,7 @@ void Sphere1TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 void Sphere1TrackingAction::PostUserTrackingAction(const G4Track* aTrack) 
 {
   G4String pName = aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName();
-  if(pName=="e+"||pName=="e-"||pName=="gamma")
+  if(pName=="e+"||pName=="e-"||pName=="gamma"||pName=="opticalphoton")
   {
     int id=aTrack->GetTrackID();
     bool new_track=true;
@@ -205,6 +216,7 @@ void Sphere1TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
       tEv->epg_pIDf[tEv->N_epg_f]=aTrack->GetParentID();
       tEv->epg_qf[tEv->N_epg_f]=aTrack->GetDynamicParticle()->GetCharge();
       tEv->epg_tf[tEv->N_epg_f]=aTrack->GetGlobalTime();
+      tEv->epg_ltf[tEv->N_epg_f]=aTrack->GetLocalTime();
       tEv->epg_xf[tEv->N_epg_f]=aTrack->GetPosition().x();
       tEv->epg_yf[tEv->N_epg_f]=aTrack->GetPosition().y();
       tEv->epg_zf[tEv->N_epg_f]=aTrack->GetPosition().z();
@@ -212,7 +224,20 @@ void Sphere1TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
       tEv->epg_pyf[tEv->N_epg_f]=aTrack->GetMomentumDirection().y();
       tEv->epg_pzf[tEv->N_epg_f]=aTrack->GetMomentumDirection().z();
       tEv->epg_ef[tEv->N_epg_f]=aTrack->GetDynamicParticle()->GetKineticEnergy();
+      tEv->epg_lf[tEv->N_epg_f]=aTrack->GetTrackLength();
+
+      tEv->epg_isOPf[tEv->N_epg_f]=0;
+      tEv->epg_isChef[tEv->N_epg_f]=0;
+
+      if(pName=="opticalphoton")
+      {
+        tEv->epg_isOPf[tEv->N_epg_f]=1;
+        if(aTrack->GetCreatorProcess()->GetProcessName()=="Cerenkov")
+          tEv->epg_isChef[tEv->N_epg_f]=1;
+      }
+
       tEv->N_epg_f++;
+
     } else
     {
       if(tEv->epg_tIDf[n]!=aTrack->GetTrackID() ||
