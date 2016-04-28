@@ -14,9 +14,11 @@ void Sphere1TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
 
   if((aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="opticalphoton"&&
+     (aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="gamma"&&
      (aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="e-"&&
      (aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="e+" &&
      (aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="C10[0.0]" &&
+     (aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="C11[0.0]" &&
      (aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="Tl208[0.0]" &&
      (aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="U238[0.0]" &&
      (aTrack->GetDynamicParticle()->GetDefinition()->GetParticleName())!="Th232[0.0]")

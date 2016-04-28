@@ -63,7 +63,7 @@ Sphere1EventAction::Sphere1EventAction(TTree* fTree, event* fEvt)
   eTree=fTree;
   eEvt=fEvt;
   //open file for the event wise information:
-  events_file.open("output/events.txt",std::ios::app);
+//AE  events_file.open("output/events.txt",std::ios::app);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -71,7 +71,7 @@ Sphere1EventAction::Sphere1EventAction(TTree* fTree, event* fEvt)
 Sphere1EventAction::~Sphere1EventAction()
 { 
   fgInstance = 0;
-  events_file.close();
+//AE  events_file.close();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -224,7 +224,7 @@ void Sphere1EventAction::CollectEventInformation(const G4Event* event)
   //G4cout << "Event number " << event->GetEventID() << ": The number of hits detected in forward direction (after the time cut) is " << forward_hits << " and the number of backward events is " << backward_hits << G4endl; 
 
   //fill event file
-  events_file << event->GetEventID() << " " << Nprimaries << " " << pos_x << " " << pos_y << " " << pos_z << " " << fake_reco_vertex[0] << " " << fake_reco_vertex[1] << " " << fake_reco_vertex[2] << " " << pdg1 << " " << Ekin1 << " " << dir_x1 << " " << dir_y1 << " " << dir_z1 << " " << pdg2 << " " << Ekin2 << " " << dir_x2 << " " << dir_y2 << " " << dir_z2 << " " << Npe << " " << forward_hits << " " << backward_hits << "\n";
+//AE  events_file << event->GetEventID() << " " << Nprimaries << " " << pos_x << " " << pos_y << " " << pos_z << " " << fake_reco_vertex[0] << " " << fake_reco_vertex[1] << " " << fake_reco_vertex[2] << " " << pdg1 << " " << Ekin1 << " " << dir_x1 << " " << dir_y1 << " " << dir_z1 << " " << pdg2 << " " << Ekin2 << " " << dir_x2 << " " << dir_y2 << " " << dir_z2 << " " << Npe << " " << forward_hits << " " << backward_hits << "\n";
   
 }
 

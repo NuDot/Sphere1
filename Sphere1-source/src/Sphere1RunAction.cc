@@ -42,6 +42,9 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "Randomize.hh"
+#include <time.h>
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 Sphere1RunAction::Sphere1RunAction()
@@ -73,6 +76,13 @@ Sphere1RunAction::~Sphere1RunAction()
 
 void Sphere1RunAction::BeginOfRunAction(const G4Run* aRun)
 { 
+
+//AE: random seed added for generating large samples
+  CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine); //selection of a random engine
+  G4long seed=time(0); //returns time in seconds as an integer
+  CLHEP::HepRandom::setTheSeed(seed);//changes the seed of the random engine
+  CLHEP::HepRandom::showEngineStatus();//shows the actual seed
+
   G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
 
   //inform the runManager to save random number seed

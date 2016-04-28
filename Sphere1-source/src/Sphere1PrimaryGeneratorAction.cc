@@ -77,9 +77,14 @@ Sphere1PrimaryGeneratorAction::Sphere1PrimaryGeneratorAction(event* fEv)
   //?
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
   //?
-  fParticleGun->SetParticleEnergy(2.995*MeV);
+  fParticleGun->SetParticleEnergy(2.529*MeV);
+//  fParticleGun->SetParticleEnergy((2.529-0.511*2-0.718)*MeV);
+//  fParticleGun->SetParticleEnergy(0.718*MeV);
+//  fParticleGun->SetParticleEnergy(0.0*MeV);
+  
   //fParticleGun->SetParticleEnergy(3.03798*1e-06*MeV); //optical photon energy @ 392.6nm: 3.1579*1e-06*MeV
 */  
+
 
   //or alternatively use HEPEvt interface
   //?
@@ -87,7 +92,10 @@ Sphere1PrimaryGeneratorAction::Sphere1PrimaryGeneratorAction(event* fEv)
   //G4String hep_input_file = "/home/christoph/geant4/MyG4_applications/Sphere1-build/Generator/original/DBeta/output/hepevt.EVT"; //2nuBB or 0nuBB
 //  G4String hep_input_file = "/u/nobackup/lwinslow/apps/Event_Generators/DBeta/output/hepevt_1_back_to_back/hepevt_1_back_to_back.EVT"; //one back to back Cd116 0nuBB event
 //  HEPEvt = new G4HEPEvtInterface(hep_input_file.data());
-  const char* filename = "/u/nobackup/lwinslow/elagin/data/db_out/Se_0vbb_1e6.EVT";//"data/hepevt.EVT";
+//  const char* filename = "/u/nobackup/lwinslow/elagin/data/db_out/Se_0vbb_1e6.EVT";//"data/hepevt.EVT";
+  const char* filename = "/u/nobackup/lwinslow/elagin/data/db_out/Te130_0vbb_1e6.EVT";
+//  const char* filename = "/u/nobackup/lwinslow/elagin/data/db_out/topology90_pxpy_100p0MeVEach_1k.EVT";
+//  const char* filename = "/u/nobackup/lwinslow/elagin/data/db_out/C10_prompt_0p79MeV_pos_0p718MeV_gamma_1k.EVT";
   G4cout<<"INPUT_FILE = "<<filename<<G4endl;
   HEPEvt = new G4HEPEvtInterface(filename);
 
@@ -99,7 +107,7 @@ Sphere1PrimaryGeneratorAction::Sphere1PrimaryGeneratorAction(event* fEv)
 
 Sphere1PrimaryGeneratorAction::~Sphere1PrimaryGeneratorAction()
 {
-//  delete fParticleGun;
+  delete fParticleGun;
   delete HEPEvt;
 
   fgInstance = 0;
@@ -140,40 +148,56 @@ void Sphere1PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double z0 = -0.5 * envSizeZ;
   */
 
+  G4double r_vtx = G4UniformRand()*3000;
+  G4double phi_vtx = G4UniformRand()*2.0*pi-pi;
+  G4double theta_vtx = acos(2.0*G4UniformRand() - 1.0);
+  G4double x0 = r_vtx*sin(theta_vtx)*cos(phi_vtx);
+  G4double y0 = r_vtx*sin(theta_vtx)*sin(phi_vtx);
+  G4double z0 = r_vtx*cos(theta_vtx);
 
+//  G4double x0 = 0.0;//r_vtx*sin(theta_vtx)*cos(phi_vtx);
+//  G4double y0 = 0.0;//r_vtx*sin(theta_vtx)*sin(phi_vtx);
+//  G4double z0 = 0.0;//r_vtx*cos(theta_vtx);
    
-  // Particle Gun
-  //?
-  G4double x0 = G4UniformRand()*2*2600-2600;// 4500.;//-6500.000;
-  G4double y0 = G4UniformRand()*2*2600-2600;// 0.;
-  G4double z0 = G4UniformRand()*2*2600-2600;// 0.;
+//  G4double x0 = G4UniformRand()*2*2600-2600;// 4500.;//-6500.000;
+//  G4double y0 = G4UniformRand()*2*2600-2600;// 0.;
+//  G4double z0 = G4UniformRand()*2*2600-2600;// 0.;
   pEv->trueVtxX = x0/10;
   pEv->trueVtxY = y0/10;
   pEv->trueVtxZ = z0/10;
-  //?
-  /*
-  G4double x0 = 2500.;
-  G4double y0 = 2500.;
-  G4double z0 = 2500.;
-  */
 
+/*
+  // Particle Gun
   // optional: set random direction for each primary: spherical coordinate system convention is the same as in stepping action. 
-  /* 
-  //?
   G4double phi = G4UniformRand()*2.0*pi-pi;
   G4double theta = acos(2.0*G4UniformRand() - 1.0);
   G4double dirx = sin(theta)*cos(phi);
   G4double diry = sin(theta)*sin(phi);
   G4double dirz = cos(theta);  
+//  G4double dirx = 1.0;//sin(theta)*cos(phi);
+//  G4double diry = 0.0;// sin(theta)*sin(phi);
+//  G4double dirz = 0.0;//cos(theta);  
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(dirx,diry,dirz));  
-  G4cout << "-------------------------------" << G4endl;
-  G4cout << "G4ThreeVector(dirx,diry,dirz)= " << G4ThreeVector(dirx,diry,dirz) << G4endl;
-  G4cout << "phi= " << phi << ", theta= " << theta << G4endl;
-  G4cout << "-------------------------------" << G4endl;
-  */
 
-  
-  //?
+
+
+//  G4cout << "-------------------------------" << G4endl;
+//  G4cout << "G4ThreeVector(dirx,diry,dirz)= " << G4ThreeVector(dirx,diry,dirz) << G4endl;
+//  G4cout << "phi= " << phi << ", theta= " << theta << G4endl;
+//  G4cout << "-------------------------------" << G4endl;
+  G4ParticleMomentum pMomentum = fParticleGun->GetParticleMomentumDirection();
+  pEv->trueDirX = pMomentum.x();
+  pEv->trueDirY = pMomentum.y();
+  pEv->trueDirZ = pMomentum.z();
+
+  fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
+  G4ThreeVector pPos =  fParticleGun->GetParticlePosition();
+  pEv->trueVtxX = pPos.x()/10;
+  pEv->trueVtxY = pPos.y()/10;
+  pEv->trueVtxZ = pPos.z()/10;
+//  SetOptPhotonPolar(); //random polarization, here one can also enter a fixed angle or a special polarization angle distribution
+//  fParticleGun->GeneratePrimaryVertex(anEvent); //!!!!!Don't comment this twice in Gun mode!!!!!!!!!!1
+*/
 /*
   G4ParticleDefinition* ion
 	//= G4ParticleTable::GetParticleTable()->GetIon(81,208,0); //Tl 
@@ -183,14 +207,10 @@ void Sphere1PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticleDefinition(ion);
   fParticleGun->SetParticleCharge(0.);
 */
-/*
-  //GunOnly
-  fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
-//  SetOptPhotonPolar(); //random polarization, here one can also enter a fixed angle or a special polarization angle distribution
-  fParticleGun->GeneratePrimaryVertex(anEvent);
-*/
 
-  
+//  fParticleGun->GeneratePrimaryVertex(anEvent); //!!!!!Don't comment this twice in Gun mode!!!!!!!!!!
+
+
   //HEPEvt generator
   //?
   //HEPEvt->SetParticlePosition(G4ThreeVector(2500.*mm,2500.*mm,2500.*mm));

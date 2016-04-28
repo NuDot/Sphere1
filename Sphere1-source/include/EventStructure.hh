@@ -1,8 +1,8 @@
 #ifndef EventStructure_H
 #define EventStructure_H 1
 
-const int MAX_epg=100000;//1000;
-const int MAX_phot=100000;
+const int MAX_epg=10000000;//1000;
+const int MAX_phot=10000000;
 
 struct event
 {
@@ -56,6 +56,10 @@ struct event
   float edep_cor;
 
   int N_phot;
+  float t_start[MAX_phot];
+  float x_start[MAX_phot];
+  float y_start[MAX_phot];
+  float z_start[MAX_phot];
   float x_hit[MAX_phot];
   float y_hit[MAX_phot];
   float z_hit[MAX_phot];
@@ -78,6 +82,9 @@ struct event
   double trueVtxX;
   double trueVtxY;
   double trueVtxZ; 
+  double trueDirX;
+  double trueDirY;
+  double trueDirZ;
 
 };
 

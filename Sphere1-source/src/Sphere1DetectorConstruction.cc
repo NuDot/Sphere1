@@ -196,9 +196,12 @@ G4VPhysicalVolume* Sphere1DetectorConstruction::Construct()
   myMPT1->AddConstProperty("FASTTIMECONSTANT", 6.9*ns); // KamLAND: 6.9
   myMPT1->AddConstProperty("SLOWTIMECONSTANT",8.8*ns); // KamLAND: 8.8
   //?
-  myMPT1->AddConstProperty("FASTSCINTILLATIONRISETIME",1.0*ns); // 1.0ns typical scale
-  myMPT1->AddConstProperty("SLOWSCINTILLATIONRISETIME",1.0*ns); // 1.0ns typical scale
+//  myMPT1->AddConstProperty("FASTSCINTILLATIONRISETIME",1.0*ns); // 1.0ns typical scale
+//  myMPT1->AddConstProperty("SLOWSCINTILLATIONRISETIME",1.0*ns); // 1.0ns typical scale
   
+  myMPT1->AddConstProperty("FASTSCINTILLATIONRISETIME",5.0*ns); // 1.0ns typical scale
+  myMPT1->AddConstProperty("SLOWSCINTILLATIONRISETIME",5.0*ns); // 1.0ns typical scale
+
   //?
   //myMPT1->AddConstProperty("YIELDRATIO",0.737);  //DC value renormalized for only 2 components
   myMPT1->AddConstProperty("YIELDRATIO",0.87);  //KamLAND: 0.87

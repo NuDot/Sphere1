@@ -71,7 +71,10 @@ int main(int argc,char** argv)
 
   TROOT root("", "");
   TFile* f;
-  f = TFile::Open("sph_out_Se82_rndVtxBox.root", "recreate");
+  //f = TFile::Open("sph_out_bkgC10_rndVtx_3p0mSphere_1.root", "recreate");
+//  f = TFile::Open("sph_out_promptC10_2p529MeV_center_5.root", "recreate");
+  f = TFile::Open("sph_out_Te130_rndVtx_3p0mSphere_SciRT5p0ns_1k.root", "recreate");
+  //f = TFile::Open("sph_out_topology90_100MeV_center_3.root", "recreate");
 
   TTree* epgTree = new TTree("epgTree", "epgTree");
   epgTree->Branch("evt_num",&Ev.evt_num,"evt_num/I");
@@ -124,6 +127,10 @@ int main(int argc,char** argv)
   epgTree->Branch("edep_cor",&Ev.edep_cor,"edep_cor/F");
 
   epgTree->Branch("N_phot",&Ev.N_phot,"N_phot/I");
+  epgTree->Branch("t_start",&Ev.t_start,"t_start[N_phot]/F");
+  epgTree->Branch("x_start",&Ev.x_start,"x_start[N_phot]/F");
+  epgTree->Branch("y_start",&Ev.y_start,"y_start[N_phot]/F");
+  epgTree->Branch("z_start",&Ev.z_start,"z_start[N_phot]/F");
   epgTree->Branch("x_hit",&Ev.x_hit,"x_hit[N_phot]/F");
   epgTree->Branch("y_hit",&Ev.y_hit,"y_hit[N_phot]/F");
   epgTree->Branch("z_hit",&Ev.z_hit,"z_hit[N_phot]/F");
@@ -147,6 +154,9 @@ int main(int argc,char** argv)
   epgTree->Branch("trueVtxX",&Ev.trueVtxX,"trueVtxX/D");
   epgTree->Branch("trueVtxY",&Ev.trueVtxY,"trueVtxY/D");
   epgTree->Branch("trueVtxZ",&Ev.trueVtxZ,"trueVtxZ/D");
+  epgTree->Branch("trurDirX",&Ev.trueDirX,"trueDirX/D");
+  epgTree->Branch("trurDirY",&Ev.trueDirY,"trueDirY/D");
+  epgTree->Branch("trurDirZ",&Ev.trueDirZ,"trueDirZ/D");
 
 
   // Choose the Random engine

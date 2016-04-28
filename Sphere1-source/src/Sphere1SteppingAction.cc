@@ -70,7 +70,7 @@ Sphere1SteppingAction::Sphere1SteppingAction(event* fEvt)
   sEvt=fEvt;
 
   //open file for the photon hit positions
-  hit_positions_file.open("output/photon_hits.txt",std::ios::app);
+//AE  hit_positions_file.open("output/photon_hits.txt",std::ios::app);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -78,7 +78,7 @@ Sphere1SteppingAction::Sphere1SteppingAction(event* fEvt)
 Sphere1SteppingAction::~Sphere1SteppingAction()
 { 
   fgInstance = 0;
-  hit_positions_file.close();
+//AE  hit_positions_file.close();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -223,6 +223,25 @@ void Sphere1SteppingAction::UserSteppingAction(const G4Step* step)
           //get the global time (=time since the event was started) for the photon hits
           G4double photon_hittime=step->GetTrack()->GetGlobalTime() - sEvt->t0;
 	  //G4cout<<"ph_time = "<<photon_hittime<<G4endl;
+	  //
+	  G4double photon_origintime=-999;
+	  G4double photon_originx=-999;
+	  G4double photon_originy=-999;
+	  G4double photon_originz=-999;
+          for(int t=0;t!=sEvt->N_epg_i;t++)
+	  {
+	    if(step->GetTrack()->GetTrackID()==sEvt->epg_tIDi[t])
+	    {
+		photon_origintime = sEvt->epg_ti[t] - sEvt->t0;
+		photon_originx = sEvt->epg_xi[t];
+		photon_originy = sEvt->epg_yi[t];
+		photon_originz = sEvt->epg_zi[t];
+		if(sEvt->epg_isOPi[t]!=1) G4cout<<"STRANGE: not a photon in a photon step"<<G4endl;
+		break;
+	    }
+	    if(t==sEvt->N_epg_i-1) G4cout<<"STRANGE: no matching point of origin for the photon"<<G4endl;
+	  }
+
           
           G4int det=0;
           G4bool det_coverage=false;
@@ -280,11 +299,16 @@ void Sphere1SteppingAction::UserSteppingAction(const G4Step* step)
           //get a copy of the active event ID (there is probably a much more elegant way to get the event from here, this is just my solution)
           G4int eventID = Sphere1EventAction::Instance()->GetCopyOfEventID();
           //write hit info to file
-          hit_positions_file << x_hit << " " << y_hit << " " << z_hit << " " << cos_theta << " " << photon_wavelength << " " << photon_hittime  << " " << det << " " << time_after_PMT << " " << det_coverage << " " << photon_hittime_corrected  << " " << time_after_PMT_corrected << " " << cos_theta_reco << " " << theta_reco << " " << phi_reco << " " << process << " " << eventID << "\n";        
+//AE          hit_positions_file << x_hit << " " << y_hit << " " << z_hit << " " << cos_theta << " " << photon_wavelength << " " << photon_hittime  << " " << det << " " << time_after_PMT << " " << det_coverage << " " << photon_hittime_corrected  << " " << time_after_PMT_corrected << " " << cos_theta_reco << " " << theta_reco << " " << phi_reco << " " << process << " " << eventID << "\n";        
   
 
 //AE: naming convention in the Event structure is identical to original Cristophs
 //    for the time being both ROOT and TXT files are stored
+
+sEvt->t_start[sEvt->N_phot]=photon_origintime;
+sEvt->x_start[sEvt->N_phot]=photon_originx;
+sEvt->y_start[sEvt->N_phot]=photon_originy;
+sEvt->z_start[sEvt->N_phot]=photon_originz;
 
 sEvt->x_hit[sEvt->N_phot]=x_hit;
 sEvt->y_hit[sEvt->N_phot]=y_hit;
@@ -340,7 +364,8 @@ G4double Sphere1SteppingAction::ApplyTransitTimeSpread(G4double true_time)
   //for now we just apply a gaussian smearing with the transit time spread as sigma. 
   //Later one can implement asymmetric TTS and Pre-, After- and Late Pulses 
   //?
-  G4double detection_time = true_time + G4RandGauss::shoot(0.,0.1);  
+  G4double detection_time = true_time + G4RandGauss::shoot(0.,0.1); //LAPPD TTS 
+//  G4double detection_time = true_time + G4RandGauss::shoot(0.,1.28); //KamLAND TTS
   //KamLAND 17 inch PMTs only, 3.0 is the FWHM, 1.28ns is the sigma (Nucl. Phys. B 87 (2000) 312
   //new hybrid PMTs have TTS=0.7ns, 0.299ns is the sigma (FWHM)
   //LAPPD :100ps now, they can maybe do 10ps soon and 1ps is the dream.
