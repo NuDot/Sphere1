@@ -1,4 +1,10 @@
 README.txt
+
+3 May 2016, Andrey Elagin
+I'm freezing this version and moving to Sphere2.
+The updated Sphere1 code is relevant for any figure generated up-to April 2016.
+
+
 29 June 2013, Christoph Aberle, UCLA
 
 Purpose of the Sphere1 simulation:
